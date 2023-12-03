@@ -12,10 +12,14 @@ class Item extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
+        'status',
         'name',
-        'type',
+        'artist',
+        'category',
         'detail',
+        'image_name',
+        'quantity',
+        'last_updated_by',
     ];
 
     /**
@@ -23,14 +27,12 @@ class Item extends Model
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-    ];
+    protected $casts = [];
 }

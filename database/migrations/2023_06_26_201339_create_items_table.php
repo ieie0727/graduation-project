@@ -13,11 +13,19 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned()->index();
+            $table->smallInteger('status')->default(1);
             $table->string('name', 100)->index();
-            $table->string('type', 100)->nullable();
+            $table->string('artist', 100);
+            $table->string('category', 100)->nullable();
             $table->string('detail', 500)->nullable();
+            $table->string('image_name')->default(null)->nullable();
+            $table->integer('quantity')->default(0);
+            $table->unsignedBigInteger('last_updated_by');
             $table->timestamps();
+            $table->softDeletes();
+
+            //外部キー制約
+            $table->foreign('last_updated_by')->references('id')->on('users');
         });
     }
 
