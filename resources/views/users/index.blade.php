@@ -10,13 +10,13 @@
 <div class="row">
   <div class="col-12">
     <div class="card">
+      @if(session('flash_message'))
+      <div class="alert alert-success">
+        {{ session('flash_message') }}
+      </div>
+      @endif
       <div class="card-header">
         <div class="card-title search">
-          @if(session('flash_message'))
-          <div class="alert alert-success">
-            {{ session('flash_message') }}
-          </div>
-          @endif
           <form action="{{route('users.index')}}" method="GET">
             名前：<input type="text" id="name" name="name">
             アドレス：<input type="text" id="email" name="email">
