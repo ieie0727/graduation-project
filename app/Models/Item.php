@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends Model
 {
+    use HasFactory, SoftDeletes;
     /**
      * The attributes that are mass assignable.
      *
@@ -17,6 +20,7 @@ class Item extends Model
         'artist',
         'category',
         'detail',
+        'image',
         'image_name',
         'quantity',
         'last_updated_by',
@@ -35,4 +39,6 @@ class Item extends Model
      * @var array<string, string>
      */
     protected $casts = [];
+
+    protected $dates = ['deleted_at'];
 }
