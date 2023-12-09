@@ -12,6 +12,15 @@ use App\Http\Controllers\OrderController;
 
 Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//usersのルート設定
 Route::resource('users', UserController::class)->middleware(['auth', 'can:isAdmin']);
+
+//itemsのルート設定
 Route::resource('items', ItemController::class)->middleware('auth');
+Route::controller(ItemController::class)->prefix('items')->name('items.')->group(function () {
+  Route::post('import', 'import')->name('import')->middleware(['auth', 'can:isAdmin']);
+});
+
+//ordersのルート設定
 Route::resource('orders', OrderController::class)->middleware('auth');

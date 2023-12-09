@@ -10,6 +10,11 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
+            @if(session('flash_message'))
+            <div class="alert alert-success">
+                {{ session('flash_message') }}
+            </div>
+            @endif
             <div class="card-header">
                 <h3 class="card-title">商品一覧</h3>
                 <div class="card-tools">

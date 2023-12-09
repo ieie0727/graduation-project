@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\CsvReader;
 
 class ItemController extends Controller
 {
@@ -63,8 +65,45 @@ class ItemController extends Controller
         ]);
 
         // 画面遷移
-        return to_route('items.index')->with('success', '商品を登録しました。');
+        return to_route('items.index')->with('flash_message', '商品を登録しました。');
     }
+
+
+    /**
+     * CSVインポートで一括登録
+     */
+    public function import(Request $request)
+    {
+        //ファイルのバリデート
+        $request->validate([
+            'csv_file' => 'required|mimes:csv,txt|max:2048',
+        ]);
+
+        // CSVファイルを二次元配列に変換
+        $file = $request->file('csv_file');
+        $path = $file->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+
+        //ヘッダーの指定・調整
+        $headers = array_shift($data);
+        $headers[] = 'last_updated_by';
+        $user_id = Auth::id();
+
+        foreach ($data as $row) {
+            //各行の末尾にuser_idを追加(last_updateded_byに対応)
+            $row[] = $user_id;
+
+            //ヘッダーとデータを組み合わせて連想配列化し、itemを登録する
+            $itemData = array_combine($headers, $row);
+            Item::create($itemData);
+        }
+
+        //画面遷移
+        return to_route('items.index')->with('flash_message', 'CSVファイルが正常に読み込まれました。');
+    }
+
+
+
 
     /**
      * Display the specified resource.
