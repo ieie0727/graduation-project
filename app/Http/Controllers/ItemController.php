@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\CsvReader;
 
 class ItemController extends Controller
 {
@@ -65,6 +67,36 @@ class ItemController extends Controller
         // 画面遷移
         return to_route('items.index')->with('success', '商品を登録しました。');
     }
+
+
+    /**
+     * CSVインポートで一括登録
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'csv_file' => 'required|mimes:csv,txt|max:2048',
+        ]);
+
+        $file = $request->file('csv_file');
+        $path = $file->getRealPath();
+
+        $data = array_map('str_getcsv', file($path));
+        $headers = array_shift($data);
+        $headers[] = 'last_updated_by'; //headerに last_updeaded_by を追加
+
+        foreach ($data as $row) {
+            $row[] = Auth::id(); //各行の末尾にuser_idを追加(last_updeaded_byに対応)
+
+            $itemData = array_combine($headers, $row);
+            Item::create($itemData);
+        }
+
+        return redirect()->route('items.index')->with('success', 'CSVファイルが正常に読み込まれました。');
+    }
+
+
+
 
     /**
      * Display the specified resource.

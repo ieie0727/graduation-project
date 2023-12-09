@@ -18,7 +18,16 @@
             </ul>
         </div>
         @endif
-
+        <div class="card-header">
+            <div class="card-tools">
+                <form action="{{ route('items.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <label for="csv_file">CSVファイルを選択：</label>
+                    <input type="file" name="csv_file" accept=".csv">
+                    <button type="submit" class="ml-3">一括登録</button>
+                </form>
+            </div>
+        </div>
         <div class="card card-primary">
             <form method="POST" action="{{route('items.store')}}" enctype="multipart/form-data">
                 @csrf
