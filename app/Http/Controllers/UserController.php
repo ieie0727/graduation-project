@@ -35,7 +35,7 @@ class UserController extends Controller
         }
 
         // usersを一覧表示
-        $users = $users->paginate(2);
+        $users = $users->paginate(10);
         return view('users.index', compact('users'));
     }
 

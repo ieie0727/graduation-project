@@ -2,56 +2,99 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
 
     /**
-     * 商品一覧
+     * Display a listing of the resource.
      */
     public function index()
     {
-        // 商品一覧取得
-        $items = Item::all();
-
-        return view('item.index', compact('items'));
+        $items = Item::withTrashed()->paginate(20);
+        return view('items.index', compact('items'));
     }
 
     /**
-     * 商品登録
+     * Show the form for creating a new resource.
      */
-    public function add(Request $request)
+    public function create()
     {
-        // POSTリクエストのとき
-        if ($request->isMethod('post')) {
-            // バリデーション
-            $this->validate($request, [
-                'name' => 'required|max:100',
-            ]);
+        return view('items.create');
+    }
 
-            // 商品登録
-            Item::create([
-                'user_id' => Auth::user()->id,
-                'name' => $request->name,
-                'type' => $request->type,
-                'detail' => $request->detail,
-            ]);
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        // バリデーション
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'artist' => 'required|string|max:100',
+            'category' => 'nullable|string|max:100',
+            'detail' => 'nullable|string|max:500',
+            'image_name' => 'nullable|string|max:255', // 必要に応じて変更
+            'quantity' => 'integer|min:0',
+            // 'last_updated_by' は外部キー
+        ]);
 
-            return redirect('/items');
+        //画像の処理
+        $image_name = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $timestamp = now()->format('YmdHis');
+            $image_name = $timestamp . '_' . $image->getClientOriginalExtension();
+            $image->move(public_path('images_uploaded\items'), $image_name);
         }
 
-        return view('item.add');
+        // 新規登録の処理
+        Item::create([
+            'name' => $request->input('name'),
+            'artist' => $request->input('artist'),
+            'category' => $request->input('category'),
+            'detail' => $request->input('detail'),
+            'image_name' => $image_name,
+            'quantity' => $request->input('quantity') ?? 0,
+            'last_updated_by' => auth()->user()->id,
+        ]);
+
+        // 画面遷移
+        return to_route('items.index')->with('success', '商品を登録しました。');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Item $item)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Item $item)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Item $item)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Item $item)
+    {
+        //
     }
 }

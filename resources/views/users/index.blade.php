@@ -12,6 +12,11 @@
     <div class="card">
       <div class="card-header">
         <div class="card-title search">
+          @if(session('flash_message'))
+          <div class="alert alert-success">
+            {{ session('flash_message') }}
+          </div>
+          @endif
           <form action="{{route('users.index')}}" method="GET">
             名前：<input type="text" id="name" name="name">
             アドレス：<input type="text" id="email" name="email">
@@ -23,11 +28,6 @@
             </div>
           </form>
         </div>
-        @if(session('flash_message'))
-        <div class="alert alert-success">
-          {{ session('flash_message') }}
-        </div>
-        @endif
         <div class="card-tools">
           <div class="input-group input-group-sm">
             <div class="input-group-append">
