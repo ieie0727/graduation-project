@@ -44,7 +44,7 @@
               <td>{{ $order->created_at->format('Y-n-j') }}</td>
               <td>{{ $order->user->name }}</td>
               <td>{{ $order->company->name }}</td>
-              <td>{{ $order->total_amount }}</td>
+              <td>{{ number_format(intval($order->total_amount)) }}</td>
               <td>{{ $order->description }}</td>
             </tr>
             @endforeach

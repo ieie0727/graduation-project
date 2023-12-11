@@ -13,4 +13,9 @@ class Company extends Model
         'address',
         'phone_number',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

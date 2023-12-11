@@ -61,10 +61,19 @@
             </tbody>
           </table>
           <div class="card-footer">
-            <label for="total-amount">合計：</label>
-            <input type="number" class="total-amount" id="total-amount" name="total_amount" value="0" readonly>
+            <div>
+              <label for="total-amount">合計：</label>
+              <input type="number" class="total-amount" id="total-amount" name="total_amount" value="0" readonly>
+            </div>
+            <div class="form-group">
+              <label for="description" class="form-label">発注理由・目的（必須）</label>
+              <textarea name="description" id="description" cols="20" rows="3" class="form-control" required></textarea>
+            </div>
+            <div class="mt-1">
+              <button type="submit" class="btn btn-primary">発注</button>
+            </div>
           </div>
-          <button type="submit" class="btn btn-primary">発注</button>
+
         </div>
       </form>
     </div>
@@ -87,7 +96,7 @@
   //商品が選択されたら、単価を表示する
   --------------------------------*/
   $(document).ready(()=>{
-    $('.id').on('change',function(){
+    $('.id').on('input',function(){
       let thisElm =$(this);
       let thisRow =thisElm.closest('tr');
       let itemId =thisElm.val();
