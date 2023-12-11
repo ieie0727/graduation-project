@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('company_id');
             $table->decimal('total_amount', 10, 2);
+            $table->string('description');
             $table->timestamps();
 
             //外部キー制約

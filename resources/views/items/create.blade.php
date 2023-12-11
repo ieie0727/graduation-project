@@ -33,21 +33,27 @@
                 @csrf
                 <div class="card-body">
                     <div class="form-group">
-                        <label for="name">商品名</label>
+                        <label for="name">商品名（必須）</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="商品名"
                             value="{{old('name')}}">
                     </div>
 
                     <div class="form-group">
-                        <label for="artist">アーティスト名</label>
+                        <label for="artist">アーティスト名（必須）</label>
                         <input type="text" class="form-control" id="artist" name="artist" placeholder="名前"
                             value="{{old('artist')}}">
                     </div>
 
                     <div class="form-group">
-                        <label for="category">カテゴリー</label>
+                        <label for="category">カテゴリー（必須）</label>
                         <input type="text" class="form-control" id="category" name="category" placeholder="カテゴリー"
                             value="{{old('category')}}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">価格（必須）</label>
+                        <input type="number" class="form-control" id="price" name="price" min="0" max="1000000"
+                            value="{{old('price')}}">
                     </div>
 
                     <div class="form-group">

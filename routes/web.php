@@ -20,6 +20,7 @@ Route::resource('users', UserController::class)->middleware(['auth', 'can:isAdmi
 Route::resource('items', ItemController::class)->middleware('auth');
 Route::controller(ItemController::class)->prefix('items')->name('items.')->group(function () {
   Route::post('import', 'import')->name('import')->middleware(['auth', 'can:isAdmin']);
+  Route::get('get/{item_id}', 'getItem');
 });
 
 //ordersのルート設定

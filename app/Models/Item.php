@@ -19,6 +19,7 @@ class Item extends Model
         'name',
         'artist',
         'category',
+        'price',
         'detail',
         'image',
         'image_name',
