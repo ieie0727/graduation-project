@@ -8,6 +8,7 @@ use App\Models\Item;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class OrderController extends Controller
 {
@@ -25,8 +26,41 @@ class OrderController extends Controller
      */
     public function create()
     {
+        //dd(old('order_items.1'));
         $items = Item::all();
         return view('orders.create', compact('items'));
+    }
+
+    public function confirm(Request $request)
+    {
+        //ガード句
+        if ($request['total_amount'] <= 0 || $request['description'] == "") {
+            return redirect()->back()->with('flash_message', '商品を１点以上入力してください。')->withInput($request->all());
+        }
+
+
+        /*------------------------------
+        // order_itemsの調整
+        ------------------------------*/
+        $order_items = $request->input('order_items');
+        //sub_totalが0のものは削除
+        $order_items = array_filter($order_items, function ($order_item) {
+            return $order_item['sub_total'] != 0;
+        });
+        $order_items = array_values($order_items);
+        array_unshift($order_items, ['id' => 0]);
+
+        //order_itemに商品名とアーティスト名を追加
+        foreach ($order_items as &$order_item) {
+            $item = Item::find($order_item['id']);
+            if ($item) {
+                $order_item['name'] = $item->name;
+                $order_item['artist'] = $item->artist;
+            }
+        }
+
+        //画面遷移(リクエストは投げず、Laravelの既存の物を使用してviewに表示できるようにする ファサード)
+        return view('orders.confirm', compact('request', 'order_items'));
     }
 
 
@@ -35,11 +69,11 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //合計金額が0以下だったら新規作成にredirect
-        //dd($request->all());
-        if ($request->total_amount <= 0) {
-            return to_route('orders.create');
+        //確認画面→戻るボタンの時は新規発注画面に戻る
+        if ($request->has('back')) {
+            return Redirect::route('orders.create')->withInput($request->all());
         }
+
 
         /*----------------------
         //ordersに登録

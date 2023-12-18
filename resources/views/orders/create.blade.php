@@ -1,3 +1,7 @@
+@php
+use Illuminate\Http\Request;
+@endphp
+
 @extends('adminlte::page')
 
 @section('title', '新規発注')
@@ -9,6 +13,11 @@
 @section('content')
 <div class="row">
   <div class="col-md-10">
+    @if (session('flash_message'))
+    <div class="alert alert-danger">
+      {{session('flash_message')}}
+    </div>
+    @endif
     @if ($errors->any())
     <div class="alert alert-danger">
       <ul>
@@ -20,7 +29,7 @@
     @endif
 
     <div class="card card-primary">
-      <form method="POST" action="{{route('orders.store')}}">
+      <form method="POST" action="{{route('orders.confirm')}}">
         @csrf
         <div class="card-body">
           <table id="orderTableBody" class="table">
@@ -34,24 +43,38 @@
               </tr>
             </thead>
             <tbody>
-              @for ($i = 1; $i <= 5; $i++) <tr>
+              @php
+              $length =5;
+              $now_length = old('order_items') ? count(old('order_items')) : 0;
+              if($now_length > $length){
+              $length =$now_length;
+              }
+              @endphp
+              @for ($i = 1; $i <= $length; $i++) <tr>
                 <td>{{ $i }}</td>
                 <td>
                   <select class="id" name="order_items[{{$i}}][id]">
-                    <option value="" selected disabled></option>
+                    <option value="0" selected></option>
                     @foreach ($items as $item)
-                    <option value="{{$item->id}}">{{$item->name}}（{{$item->artist}}）</option>
+                    <option value="{{$item->id}}" {{ old('order_items.' . $i . '.id' )==$item->id ? 'selected' : '' }}>
+                      {{$item->name}}（{{$item->artist}}）
+                    </option>
                     @endforeach
                   </select>
                 </td>
-                <td>
-                  <input type="number" class="price" name="order_items[{{$i}}][price]" value="0" readonly>
+
+                <td> {{--lavelタグで表示--}}
+                  <input type="number" class="price" name="order_items[{{$i}}][price]"
+                    value="{{ old('order_items.'.$i.'.price', 0) }}" readonly>
                 </td>
                 <td>
-                  <input type="number" class="quantity" name="order_items[{{$i}}][quantity]" value="0" min="0">
+                  <input type="number" class="quantity" name="order_items[{{$i}}][quantity]"
+                    value="{{old('order_items.'.$i.'.quantity',0)}}" min="0">
                 </td>
-                <td>
-                  <input type="number" class="sub-total" name="order_items[{{$i}}][sub_total]" value="0">
+
+                <td>{{--lavelで表示--}}
+                  <input type="number" class="sub-total" name="order_items[{{$i}}][sub_total]"
+                    value="{{old('order_items.'.$i.'.sub_total',0)}}" readonly>
                 </td>
                 </tr>
                 @endfor
@@ -61,14 +84,16 @@
           <div class="card-footer">
             <div>
               <label for="total-amount">合計：</label>
-              <input type="number" class="total-amount" id="total-amount" name="total_amount" value="0" readonly>
+              <input type="number" class="total-amount" id="total-amount" name="total_amount"
+                value="{{old('total_amount')}}" readonly>
             </div>
             <div class="form-group">
               <label for="description" class="form-label">発注理由・目的（必須）</label>
-              <textarea name="description" id="description" cols="20" rows="3" class="form-control" required></textarea>
+              <textarea name="description" id="description" cols="20" rows="3" class="form-control"
+                required>{{old('description')}}</textarea>
             </div>
             <div class="mt-1">
-              <button type="submit" class="btn btn-primary">発注</button>
+              <button type="submit" class="btn btn-primary">確認</button>
             </div>
           </div>
 
@@ -80,12 +105,6 @@
 @stop
 
 @section('css')
-<style>
-  #addRow {
-    margin: 0 0 0 auto;
-    text-align: right;
-  }
-</style>
 @stop
 
 

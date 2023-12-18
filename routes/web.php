@@ -18,10 +18,13 @@ Route::resource('users', UserController::class)->middleware(['auth', 'can:isAdmi
 
 //itemsのルート設定
 Route::resource('items', ItemController::class)->middleware('auth');
-Route::controller(ItemController::class)->prefix('items')->name('items.')->group(function () {
-  Route::post('import', 'import')->name('import')->middleware(['auth', 'can:isAdmin']);
+Route::controller(ItemController::class)->prefix('items')->name('items.')->middleware('auth')->group(function () {
+  Route::post('import', 'import')->name('import')->middleware('can:isAdmin');
   Route::get('get/{item_id}', 'getItem');
 });
 
 //ordersのルート設定
 Route::resource('orders', OrderController::class)->middleware('auth');
+Route::controller(OrderController::class)->prefix('orders')->name('orders.')->group(function () {
+  Route::post('confirm', 'confirm')->name('confirm');
+});
