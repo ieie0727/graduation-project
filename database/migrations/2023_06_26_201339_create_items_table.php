@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name', 100)->index();
             $table->string('artist', 100);
             $table->string('category', 100)->nullable();
+            $table->integer('price');
             $table->string('detail', 500)->nullable();
             $table->string('image_name')->default(null)->nullable();
             $table->integer('quantity')->default(0);

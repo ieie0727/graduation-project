@@ -17,6 +17,7 @@ class ItemsTableSeeder extends Seeder
             'name' => 'I?U',
             'artist' => 'Mr.Children',
             'category' => 'J-POP',
+            'price' => 1500,
             'detail' => '',
             'image_name' => '',
             'last_updated_by' => '1'
@@ -26,6 +27,7 @@ class ItemsTableSeeder extends Seeder
             'name' => 'Super Market Fantasy',
             'artist' => 'Mr.Children',
             'category' => 'J-POP',
+            'price' => 1000,
             'detail' => '',
             'image_name' => '',
             'last_updated_by' => '1'

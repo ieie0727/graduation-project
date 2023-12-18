@@ -6,7 +6,7 @@ use App\Models\Item;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\CsvReader;
+use Ramsey\Uuid\Type\Integer;
 
 class ItemController extends Controller
 {
@@ -38,8 +38,9 @@ class ItemController extends Controller
             'name' => 'required|string|max:100',
             'artist' => 'required|string|max:100',
             'category' => 'nullable|string|max:100',
+            'price' => 'required|numeric|min:0|max:1000000',
             'detail' => 'nullable|string|max:500',
-            'image_name' => 'nullable|string|max:255', // 必要に応じて変更
+            'image_name' => 'nullable|string|max:255',
             'quantity' => 'integer|min:0',
             // 'last_updated_by' は外部キー
         ]);
@@ -58,6 +59,7 @@ class ItemController extends Controller
             'name' => $request->input('name'),
             'artist' => $request->input('artist'),
             'category' => $request->input('category'),
+            'price' => $request->input('price'),
             'detail' => $request->input('detail'),
             'image_name' => $image_name,
             'quantity' => $request->input('quantity') ?? 0,
@@ -135,5 +137,18 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         //
+    }
+
+
+    /*-------------------------------------------------
+    // jQueryで使用
+    -------------------------------------------------*/
+    /**
+     * 指定されたidのitemを返す
+     */
+    public function getItem($id)
+    {
+        $item = Item::find($id);
+        return response()->json($item);
     }
 }
