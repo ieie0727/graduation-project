@@ -114,7 +114,8 @@ class OrderController extends Controller
             }
         }
 
-        return to_route('orders.index')->with('flash_message', '新規発注をしました。');
+
+        return to_route('orderMail', ['order_id' => $order->id]);
     }
 
     /**

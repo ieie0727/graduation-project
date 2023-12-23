@@ -34,6 +34,7 @@
                             <th>アーティスト</th>
                             <th>カテゴリー</th>
                             <th>価格</th>
+                            <th>在庫数</th>
                             <th>ジャケット</th>
                         </tr>
                     </thead>
@@ -45,6 +46,7 @@
                             <td>{{$item->artist}}</td>
                             <td>{{ $item->category }}</td>
                             <td>{{ $item->price }}</td>
+                            <td>{{ $item->quantity }}</td>
                             <td>
                                 @if($item->image_name)
                                 <img src="{{asset('images_uploaded/items/'.$item->image_name)}}" alt="" width="30px"

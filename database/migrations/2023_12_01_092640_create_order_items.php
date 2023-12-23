@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('order_id')->nullable(); // nullable を追加
+            $table->unsignedBigInteger('item_id')->nullable(); // nullable を追加
             $table->integer('quantity');
             $table->decimal('sub_total', 10, 2);
             $table->timestamps();
 
-            //外部キー制約
-            $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('item_id')->references('id')->on('items');
+            // 外部キー制約
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('item_id')->references('id')->on('items')->onDelete('set null')->onUpdate('cascade');
         });
     }
 

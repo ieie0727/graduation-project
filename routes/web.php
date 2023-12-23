@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\MailController;
 
 /*---------------------------------------------
 // ルート設定
@@ -27,4 +28,10 @@ Route::controller(ItemController::class)->prefix('items')->name('items.')->middl
 Route::resource('orders', OrderController::class)->middleware('auth');
 Route::controller(OrderController::class)->prefix('orders')->name('orders.')->group(function () {
   Route::post('confirm', 'confirm')->name('confirm');
+});
+
+//メールのルート設定
+
+Route::controller(MailController::class)->group(function () {
+  Route::get('/order-mail/{order_id}', 'orderMail')->name('orderMail');
 });
