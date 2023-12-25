@@ -5,7 +5,7 @@
         "dev": "npm run development",
         "build": "vite build",
         "prod": "npm run production",
-        "heroku-postbuild": "npm run prod"
+        "heroku-postbuild": "npm run build"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
