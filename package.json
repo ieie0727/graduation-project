@@ -3,9 +3,13 @@
     "type": "module",
     "scripts": {
         "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-potions-poll=1000",
+        "hot": "mix watch --hot",
         "build": "vite build",
         "prod": "npm run production",
-        "heroku-postbuild": "npm run build & composer install"
+        "heroku-postbuild": "npm run build"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
