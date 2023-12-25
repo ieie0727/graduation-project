@@ -25,7 +25,9 @@ class MailController extends Controller
         $order_items = OrderItem::where('order_id', $order->id)->get();
 
         //送信先とモデルの指定
-        Mail::to($company->email)->send(new OrderMail($order, $company, $order_items));
+        if ($company && $company->email) {
+            Mail::to($company->email)->send(new OrderMail($order, $company, $order_items));
+        }
 
         //メール送信後の処理
         return to_route('orders.index')->with('flash_message', '新規発注をしました。');

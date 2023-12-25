@@ -15,44 +15,46 @@
                 {{ session('flash_message') }}
             </div>
             @endif
+
             <div class="card-header">
-                <h3 class="card-title">商品一覧</h3>
-                <div class="card-tools">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-append">
-                            <a href="{{ route('items.create') }}" class="btn btn-info">商品登録</a>
+                <div class="card-title item-search">
+                    <form action="{{ route('items.index') }}" method="GET" class="form-inline">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="keyword" id="keyword"
+                                placeholder="商品名orアーティスト名（部分一致）" value="{{old('keyword')}}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-secondary">検索</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
+                </div>
+
+                <div class="card-tools" style="display:inline;">
+                    <a href="{{ route('items.create') }}" class="btn btn-info">商品登録</a>
                 </div>
             </div>
+
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>商品名</th>
-                            <th>アーティスト</th>
-                            <th>カテゴリー</th>
-                            <th>価格</th>
-                            <th>在庫数</th>
-                            <th>ジャケット</th>
+                            <th>@sortablelink('id','ID')</th>
+                            <th>@sortablelink('name','商品名')</th>
+                            <th>@sortablelink('artist','アーティスト')</th>
+                            <th>@sortablelink('category', 'カテゴリー')</th>
+                            <th>@sortablelink('price', '価格')</th>
+                            <th>@sortablelink('quantity', '在庫数')</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($items as $item)
-                        <tr>
+                        <tr onclick="window.location='{{route('items.show', $item)}}'">
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{$item->artist}}</td>
                             <td>{{ $item->category }}</td>
                             <td>{{ $item->price }}</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>
-                                @if($item->image_name)
-                                <img src="{{asset('images_uploaded/items/'.$item->image_name)}}" alt="" width="30px"
-                                    height="30px">
-                                @endif
-                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -65,6 +67,14 @@
 @stop
 
 @section('css')
+<style>
+    tbody tr:hover {
+        background-color: #f5f5f5;
+        /* 適当な背景色 */
+        cursor: pointer;
+        /* マウスがポインターになる */
+    }
+</style>
 @stop
 
 @section('js')

@@ -17,6 +17,8 @@
       <form method="POST" action="{{route('orders.store')}}">
         @csrf
         <div class="card-body">
+          <input type="hidden" name="company_id" value="{{$company['id']}}">
+          <p>発注先：<b>{{$company['name']}}</b></p>
           <table id="orderTableBody" class="table">
             <thead>
               <tr>
@@ -53,10 +55,10 @@
           <div class="card-footer">
             <div>
               <input type="hidden" name="total_amount" value="{{$request['total_amount']}}">
-              <p><b>合計：{{$request['total_amount']}}</b></p>
+              <p><b>合計：{{number_format(intval($request['total_amount'])) }}</b></p>
             </div>
             <div class="form-group">
-              <label for="description" class="form-label">発注理由・目的（必須）</label>
+              <label for="description" class="form-label">発注理由・目的</label>
               <input type="hidden" name="description" value="{{$request['description']}}">
               <p>{{$request['description']}}</p>
             </div>

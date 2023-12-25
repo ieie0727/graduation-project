@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Http\Requests\ItemRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Ramsey\Uuid\Type\Integer;
 
 class ItemController extends Controller
 {
@@ -14,9 +14,19 @@ class ItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::withTrashed()->paginate(20);
+        $items = Item::sortable();
+
+        //検索
+        $keyword = $request['keyword'];
+        if ($keyword) {
+            $items->orWhere('name', 'like', '%' . $keyword . '%');
+            $items->orWhere('artist', 'like', '%' . $keyword . '%');
+        }
+
+        //画面遷移
+        $items = $items->paginate(20);
         return view('items.index', compact('items'));
     }
 
@@ -31,43 +41,22 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ItemRequest $request)
     {
-        // バリデーション
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'artist' => 'required|string|max:100',
-            'category' => 'nullable|string|max:100',
-            'price' => 'required|numeric|min:0|max:1000000',
-            'detail' => 'nullable|string|max:500',
-            'image_name' => 'nullable|string|max:255',
-            'quantity' => 'integer|min:0',
-            // 'last_updated_by' は外部キー
-        ]);
+        // バリデーション済みのデータを取得
+        $validatedData = $request->validated();
 
-        //画像の処理
-        $image_name = null;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $timestamp = now()->format('YmdHis');
-            $image_name = $timestamp . '_' . $image->getClientOriginalExtension();
-            $image->move(public_path('images_uploaded\items'), $image_name);
-        }
+        // 画像の処理
+        $this->handleImage($validatedData);
 
         // 新規登録の処理
-        Item::create([
-            'name' => $request->input('name'),
-            'artist' => $request->input('artist'),
-            'category' => $request->input('category'),
-            'price' => $request->input('price'),
-            'detail' => $request->input('detail'),
-            'image_name' => $image_name,
-            'quantity' => $request->input('quantity') ?? 0,
-            'last_updated_by' => auth()->user()->id,
-        ]);
+        Item::create(array_merge($validatedData, [
+            'quantity' => $validatedData['quantity'] ?? 0,
+            'last_updated_by' => Auth::user()->id,
+        ]));
 
         // 画面遷移
-        return to_route('items.index')->with('flash_message', '商品を登録しました。');
+        return redirect()->route('items.index')->with('flash_message', '商品を登録しました。');
     }
 
 
@@ -105,40 +94,83 @@ class ItemController extends Controller
     }
 
 
-
-
     /**
      * Display the specified resource.
      */
     public function show(Item $item)
     {
-        //
+        return view('items.show', compact('item'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Item $item)
     {
-        //
+        return view('items.edit', compact('item'));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Item $item)
+    public function update(ItemRequest $request, Item $item)
     {
-        //
+        // バリデーション済みのデータを取得
+        $validatedData = $request->validated();
+
+        // 画像の処理
+        $this->handleImage($validatedData);
+
+        // 商品情報の更新
+        $item->update(array_merge($validatedData, [
+            'image_name' => $validatedData['image_name'] ?? $item->image_name,
+            'quantity' => $validatedData['quantity'] ?? 0,
+            'last_updated_by' => Auth::user()->id,
+        ]));
+
+        // 画面遷移
+        return redirect()->route('items.show', compact('item'))->with('flash_message', '商品情報を更新しました。');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Item $item)
     {
-        //
+        //論理削除処理
+        $item->delete();
+
+        //画面遷移
+        return to_route('items.index')->with('flash_message', '商品を削除しました。');
     }
 
+
+    /*-------------------------------------------------
+    // 共通メソッドの切り出し
+    -------------------------------------------------*/
+    /**
+     * 画像アップロード処理
+     */
+    private function handleImage(&$data)
+    {
+        //画像をアップロード
+        $image_name = null;
+        if (isset($data['image'])) {
+            $image = $data['image'];
+            $timestamp = now()->format('YmdHis');
+            $image_name = $timestamp . '_' . $image->getClientOriginalExtension();
+            $image->move(public_path('images_uploaded/items'), $image_name);
+        }
+
+        //imageキーを削除して、image_nameを入れる
+        unset($data['image']);
+        data_set($data, 'image_name', $image_name);
+
+        return $image_name;
+    }
 
     /*-------------------------------------------------
     // jQueryで使用
@@ -149,6 +181,17 @@ class ItemController extends Controller
     public function getItem($id)
     {
         $item = Item::find($id);
+        //dd($item);
         return response()->json($item);
+    }
+
+    /**
+     * 全てのitemを返す
+     */
+    public function getAllItems()
+    {
+        $items = Item::all();
+        //dd($items);
+        return response()->json($items);
     }
 }

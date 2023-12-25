@@ -305,6 +305,11 @@ return [
             'url'  => 'orders',
             'icon' => 'fas fa-gamepad',
         ],
+        [
+            'text' => '取引先',
+            'url'  => 'companies',
+            'icon' => 'fas fa-gamepad',
+        ],
 
         // AdminLTEデフォルト
         /*
