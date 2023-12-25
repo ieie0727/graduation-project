@@ -16,7 +16,7 @@
       </div>
       @endif
       <div class="card-header">
-        <h3 class="card-title">会社一覧</h3>
+        <h3 class="card-title">取引先一覧</h3>
         <div class="card-tools">
           <div class="input-group input-group-sm">
             <div class="input-group-append">
@@ -39,7 +39,7 @@
           </thead>
           <tbody>
             @foreach ($companies as $company)
-            <tr onclick="window.location='{{route('companies.edit', $company)}}'">
+            <tr onclick="window.location='{{route('companies.show', $company)}}'">
               <td class="align-middle">{{ $company->id }}</td>
               <td class="align-middle">{{ $company->name }}</td>
               <td class="align-middle">{{ $company->address }}</td>

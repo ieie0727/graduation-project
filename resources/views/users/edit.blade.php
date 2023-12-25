@@ -3,7 +3,7 @@
 @section('title', 'ユーザー登録')
 
 @section('content_header')
-<h1>ユーザー詳細</h1>
+<h1>ユーザー詳細・権限更新（ID:{{$user->id}}）</h1>
 @stop
 
 @section('content')

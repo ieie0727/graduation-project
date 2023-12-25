@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', '商品一覧')
+@section('title', '発注履歴')
 
 @section('content_header')
 <h1>発注履歴</h1>
@@ -30,7 +30,7 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>日付</th>
+              <th>@sortablelink('created_at','発注日時')</th>
               <th>発注者</th>
               <th>発注先</th>
               <th>金額</th>
@@ -39,13 +39,13 @@
           </thead>
           <tbody>
             @foreach ($orders as $order)
-            <tr>
-              <td>{{ $order->id }}</td>
-              <td>{{ $order->created_at }}</td>
-              <td>{{ $order->user->name }}</td>
-              <td>{{ $order->company->name }}</td>
-              <td>{{ number_format(intval($order->total_amount)) }}</td>
-              <td>{{ $order->description }}</td>
+            <tr onclick="window.location='{{route('orders.show', $order)}}'">
+              <td class="align-middle">{{ $order->id }}</td>
+              <td class="align-middle">{{ $order->created_at }}</td>
+              <td class="align-middle">{{ $order->user->name }}</td>
+              <td class="align-middle">{{ $order->company->name }}</td>
+              <td class="align-middle">{{ number_format(intval($order->total_amount)) }}</td>
+              <td class="align-middle">{{ $order->description }}</td>
             </tr>
             @endforeach
           </tbody>
@@ -58,6 +58,14 @@
 @stop
 
 @section('css')
+<style>
+  tbody tr:hover {
+    background-color: #f5f5f5;
+    /* 適当な背景色 */
+    cursor: pointer;
+    /* マウスがポインターになる */
+  }
+</style>
 @stop
 
 @section('js')

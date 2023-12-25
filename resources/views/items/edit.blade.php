@@ -3,7 +3,7 @@
 @section('title', '商品編集')
 
 @section('content_header')
-<h1>商品編集</h1>
+<h1>商品編集（ID:{{$item->id}}）</h1>
 @stop
 
 @section('content')

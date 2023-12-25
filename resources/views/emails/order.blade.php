@@ -20,11 +20,11 @@ use App\Models\Item;
   <tbody>
     @for ($i = 0; $i < count($order_items); $i++) @php $order_item=$order_items[$i];
       $item=Item::find($order_item['item_id']); @endphp <tr>
-      <td>{{ $i + 1 }}</td>
-      <td>{{ $item['name'].'（'.$item['artist'].'）' }}</td>
-      <td>{{ number_format($item['price'], 0, '.', ',') }}</td>
-      <td>{{ $order_item['quantity'] }}</td>
-      <td>{{ number_format($order_item['sub_total'], 0, '.', ',') }}</td>
+      <td class="align-middle">{{ $i + 1 }}</td>
+      <td class="align-middle">{{ $item['name'].'（'.$item['artist'].'）' }}</td>
+      <td class="align-middle">{{ number_format($item['price'], 0, '.', ',') }}</td>
+      <td class="align-middle">{{ $order_item['quantity'] }}</td>
+      <td class="align-middle">{{ number_format($order_item['sub_total'], 0, '.', ',') }}</td>
       </tr>
       @endfor
   </tbody>

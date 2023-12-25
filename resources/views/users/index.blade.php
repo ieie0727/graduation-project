@@ -50,17 +50,17 @@
           <tbody>
             @foreach ($users as $user)
             <tr onclick="window.location='{{route('users.edit', $user)}}'">
-              <td>{{ $user->id }}</td>
-              <td>
+              <td class="align-middle">{{ $user->id }}</td>
+              <td class="align-middle">
                 @if ($user->role==1)
                 管理者
                 @else
                 ユーザー
                 @endif
               </td>
-              <td>{{ $user->name }}</td>
-              <td>{{ $user->email}}</td>
-              <td>
+              <td class="align-middle">{{ $user->name }}</td>
+              <td class="align-middle">{{ $user->email}}</td>
+              <td class="align-middle">
                 @if ($user->deleted_at==null)
                 在籍
                 @else

@@ -31,20 +31,20 @@
             </thead>
             <tbody>
               @for ($i=1; $i<count($order_items); $i++) @php $order_item=$order_items[$i]; @endphp <tr>
-                <td>{{$i}}</td>
-                <td>
+                <td class="align-middle">{{$i}}</td>
+                <td class="align-middle">
                   <input type="hidden" name="order_items[{{$i}}][id]" value="{{$order_item['id']}}">
                   {{$order_item['name']}}
                 </td>
-                <td>
+                <td class="align-middle">
                   <input type="hidden" name="order_items[{{$i}}][price]" value="{{$order_item['price']}}">
                   {{$order_item['price']}}
                 </td>
-                <td>
+                <td class="align-middle">
                   <input type="hidden" name="order_items[{{$i}}][quantity]" value="{{$order_item['quantity']}}">
                   {{$order_item['quantity']}}
                 </td>
-                <td>
+                <td class="align-middle">
                   <input type="hidden" name="order_items[{{$i}}][sub_total]" value="{{$order_item['sub_total']}}">
                   {{$order_item['sub_total']}}
                 </td>

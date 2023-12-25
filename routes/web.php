@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrderController;
@@ -13,7 +14,7 @@ use App\Http\Controllers\MailController;
 ---------------------------------------------*/
 
 Auth::routes();
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //usersのルート設定
 Route::resource('users', UserController::class)->middleware('auth');
@@ -23,11 +24,9 @@ Route::resource('items', ItemController::class)->middleware('auth');
 
 Route::controller(ItemController::class)->prefix('items')->name('items.')->middleware('auth')->group(function () {
   Route::post('import', 'import')->name('import')->middleware('can:isAdmin');
-  Route::get('all/items', 'getItem');
+  Route::get('all/items', 'getAllItems');
   Route::get('get/{item_id}', 'getItem');
 });
-
-Route::get('/items/all/items', [ItemController::class, 'getAllItems']);
 
 //ordersのルート設定
 Route::resource('orders', OrderController::class)->middleware('auth');
