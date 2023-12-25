@@ -28,77 +28,93 @@ use Illuminate\Http\Request;
     </div>
     @endif
 
-    <div class="card card-primary">
-      <form method="POST" action="{{route('orders.confirm')}}">
-        @csrf
+    <div class="card">
+      <div class="card-header">
+        <span class="align-middle">※商品を発注するためには、先に<a href="{{route('items.create')}}"
+            target="_blank">商品登録</a>をする必要があります。</span>
+      </div>
+      <div class="card-primary">
+
         <div class="card-body">
-          <table id="orderTableBody" class="table">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>商品名</th>
-                <th>単価</th>
-                <th>発注数</th>
-                <th>小計</th>
-              </tr>
-            </thead>
-            <tbody>
-              @php
-              $length =5;
-              $now_length = old('order_items') ? count(old('order_items')) : 0;
-              if($now_length > $length){
-              $length =$now_length;
-              }
-              @endphp
-              @for ($i = 1; $i <= $length; $i++) <tr>
-                <td>{{ $i }}</td>
-                <td>
-                  <select class="id" name="order_items[{{$i}}][id]">
-                    <option value="0" selected></option>
-                    @foreach ($items as $item)
-                    <option value="{{$item->id}}" {{ old('order_items.' . $i . '.id' )==$item->id ? 'selected' : '' }}>
-                      {{$item->name}}（{{$item->artist}}）
-                    </option>
-                    @endforeach
-                  </select>
-                </td>
-
-                <td> {{--lavelタグで表示--}}
-                  <input type="number" class="price" name="order_items[{{$i}}][price]"
-                    value="{{ old('order_items.'.$i.'.price', 0) }}" readonly>
-                </td>
-                <td>
-                  <input type="number" class="quantity" name="order_items[{{$i}}][quantity]"
-                    value="{{old('order_items.'.$i.'.quantity',0)}}" min="0">
-                </td>
-
-                <td>{{--lavelで表示--}}
-                  <input type="number" class="sub-total" name="order_items[{{$i}}][sub_total]"
-                    value="{{old('order_items.'.$i.'.sub_total',0)}}" readonly>
-                </td>
+          <form method="POST" action="{{route('orders.confirm')}}">
+            @csrf
+            <label class="form-label" for="company_id">発注先：</label>
+            <select class="form-select" id="company_id" name="company_id" required>
+              <option value="0" selected></option>
+              @foreach ($companies as $company)
+              <option value="{{$company->id}}" {{old('company_id')==$company->id ? 'selected' : ''}}>
+                {{$company->name}}
+              </option>
+              @endforeach
+            </select>
+            <table id="orderTableBody" class="table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>商品名</th>
+                  <th>単価</th>
+                  <th>発注数</th>
+                  <th>小計</th>
                 </tr>
-                @endfor
-            </tbody>
-          </table>
-          <button type="button" id="addRow" class="btn btn-secondary mb-3"><b>＋</b></button>
-          <div class="card-footer">
-            <div>
-              <label for="total-amount">合計：</label>
-              <input type="number" class="total-amount" id="total-amount" name="total_amount"
-                value="{{old('total_amount')}}" readonly>
-            </div>
-            <div class="form-group">
-              <label for="description" class="form-label">発注理由・目的（必須）</label>
-              <textarea name="description" id="description" cols="20" rows="3" class="form-control"
-                required>{{old('description')}}</textarea>
-            </div>
-            <div class="mt-1">
-              <button type="submit" class="btn btn-primary">確認</button>
-            </div>
-          </div>
+              </thead>
+              <tbody>
+                @php
+                $length =5;
+                $now_length = old('order_items') ? count(old('order_items')) : 0;
+                if($now_length > $length){
+                $length =$now_length;
+                }
+                @endphp
+                @for ($i = 1; $i <= $length; $i++) <tr>
+                  <td>{{ $i }}</td>
+                  <td>
+                    <select class="id" name="order_items[{{$i}}][id]">
+                      <option value="0" selected></option>
+                      @foreach ($items as $item)
+                      <option value="{{$item->id}}" {{ old('order_items.' . $i . '.id' )==$item->id ? 'selected' : ''
+                        }}>
+                        {{$item->name}}（{{$item->artist}}）
+                      </option>
+                      @endforeach
+                    </select>
+                  </td>
 
+                  <td> {{--lavelタグで表示--}}
+                    <input type="number" class="price" name="order_items[{{$i}}][price]"
+                      value="{{ old('order_items.'.$i.'.price', 0) }}" readonly>
+                  </td>
+                  <td>
+                    <input type="number" class="quantity" name="order_items[{{$i}}][quantity]"
+                      value="{{old('order_items.'.$i.'.quantity',0)}}" min="0">
+                  </td>
+
+                  <td>{{--lavelで表示--}}
+                    <input type="number" class="sub-total" name="order_items[{{$i}}][sub_total]"
+                      value="{{old('order_items.'.$i.'.sub_total',0)}}" readonly>
+                  </td>
+                  </tr>
+                  @endfor
+              </tbody>
+            </table>
+            <button type="button" id="addRow" class="btn btn-secondary mb-3"><b>＋</b></button>
+            <div class="card-footer">
+              <div>
+                <label for="total-amount">合計：</label>
+                <input type="number" class="total-amount" id="total-amount" name="total_amount"
+                  value="{{ old('total_amount',0) }}" readonly>
+              </div>
+              <div class="form-group">
+                <label for="description" class="form-label">発注理由・目的（必須）</label>
+                <textarea name="description" id="description" cols="20" rows="3" class="form-control"
+                  required>{{old('description')}}</textarea>
+              </div>
+              <div class="mt-1">
+                <button type="submit" class="btn btn-primary">確認</button>
+              </div>
+            </div>
         </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>
@@ -111,8 +127,46 @@ use Illuminate\Http\Request;
 @section('js')
 <script>
   /**
+   * selectが押されたら選択肢を更新する
    * 
-    */
+  */
+  $(document).ready(()=>{
+    $('.id').on('click',function(){
+      //alert("1");
+      let thisElm =$(this);
+      let thisRow =thisElm.closest('tr');
+      let id =thisElm.val();
+
+      $.ajax({
+        type:'GET',
+        url:'/items/all/items',
+        dataType: 'json',
+
+        success:function(response){
+          let newOptions = '<option value="0" selected></option>';
+                response.forEach(item => {
+                  if(item.id==id){
+                    newOptions += `<option value="${item.id}" selected>${item.name}（${item.artist}）</option>`;
+                  }else{
+                    newOptions += `<option value="${item.id}" >${item.name}（${item.artist}）</option>`;
+                  }
+                });
+
+                // 現在のセレクトボックスに新しい選択肢を設定
+                thisElm.children().remove();
+                thisElm.append(newOptions);
+
+        },
+        error:function(error){
+          console.log('Error',error);
+        },
+      });
+    });
+  });
+  
+  /**
+  * 「＋」ボタンを押したら行が増える
+  */
   $(document).ready(()=>{
     $('#addRow').on('click',function(){
       //現在の行数を取得
@@ -157,7 +211,8 @@ use Illuminate\Http\Request;
           url: "/items/get/"+itemId,
 
           success:function(response){
-            thisRow.find('.price').val(response.price);
+            let price = response.price ?? 0;
+            thisRow.find('.price').val(price);
             updateTotal(thisElm);
           },
           error:function(error){

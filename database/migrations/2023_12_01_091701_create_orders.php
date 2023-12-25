@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('user_id')->nullable(); // nullable を追加
+            $table->unsignedBigInteger('company_id')->nullable(); // nullable を追加
             $table->decimal('total_amount', 10, 2);
             $table->string('description');
             $table->timestamps();
 
-            //外部キー制約
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('company_id')->references('id')->on('companies');
+            // 外部キー制約
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('set null')->onUpdate('cascade');
         });
     }
 
@@ -30,7 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-
         Schema::dropIfExists('orders');
     }
 };

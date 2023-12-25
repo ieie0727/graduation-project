@@ -41,7 +41,7 @@
             @foreach ($orders as $order)
             <tr>
               <td>{{ $order->id }}</td>
-              <td>{{ $order->created_at->format('Y-n-j') }}</td>
+              <td>{{ $order->created_at }}</td>
               <td>{{ $order->user->name }}</td>
               <td>{{ $order->company->name }}</td>
               <td>{{ number_format(intval($order->total_amount)) }}</td>

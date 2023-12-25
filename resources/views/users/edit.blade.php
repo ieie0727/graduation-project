@@ -41,20 +41,19 @@
             <label for="role" class="form-check-label">管理者権限</label>
           </div>
         </div>
-
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary">更新</button>
-        </div>
+          <a href="{{ route('users.index') }}" class="btn btn-secondary">戻る</a>
+          <button type="submit" class="btn btn-primary ml-3">権限更新</button>
       </form>
-      <span class="card-footer">
-        <form action="{{ route('users.destroy', compact('user')) }}" method="POST"
-          onsubmit="return confirm('本当に削除しますか？')">
-          @csrf
-          @method('delete')
-          <button type="submit" class="btn btn-danger">削除</button>
-        </form>
+      <form action="{{ route('users.destroy', compact('user')) }}" method="POST" onsubmit="return confirm('本当に削除しますか？')"
+        id="user_delete_button" class="ml-3" style="display: inline;">
+        @csrf
+        @method('delete')
+        <button type="submit" class="btn btn-danger">削除</button>
+      </form>
     </div>
   </div>
+</div>
 
 
 </div>

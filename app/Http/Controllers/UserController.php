@@ -76,10 +76,12 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
+    /*
     public function show(User $user)
     {
         return view('users.show', compact('user'));
     }
+    */
 
 
     /**
@@ -123,6 +125,6 @@ class UserController extends Controller
         $user->delete();
 
         //画面遷移
-        return to_route('users.index')->with('flash_message', 'ユーザーを削除しました。');
+        return to_route('users.index')->with('flash_message', 'ユーザーを退会させました。');
     }
 }

@@ -19,14 +19,14 @@ return new class extends Migration
             $table->string('category', 100)->nullable();
             $table->integer('price');
             $table->string('detail', 500)->nullable();
-            $table->string('image_name')->default(null)->nullable();
+            $table->string('image_name')->nullable();
             $table->integer('quantity')->default(0);
-            $table->unsignedBigInteger('last_updated_by');
+            $table->unsignedBigInteger('last_updated_by')->nullable(); // nullable() を追加
             $table->timestamps();
             $table->softDeletes();
 
-            //外部キー制約
-            $table->foreign('last_updated_by')->references('id')->on('users');
+            // 外部キー制約
+            $table->foreign('last_updated_by')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
         });
     }
 
