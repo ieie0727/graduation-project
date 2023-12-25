@@ -2,10 +2,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "npm run development",
-        "build": "vite build",
-        "prod": "npm run production",
-        "heroku-postbuild": "npm run prod"
+        "dev": "vite",
+        "build": "vite build"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.6",

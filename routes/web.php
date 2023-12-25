@@ -23,7 +23,7 @@ Route::resource('users', UserController::class)->middleware('auth');
 Route::resource('items', ItemController::class)->middleware('auth');
 
 Route::controller(ItemController::class)->prefix('items')->name('items.')->middleware('auth')->group(function () {
-  Route::post('import', 'import')->name('import')->middleware('can:isAdmin');
+  Route::post('import', 'import')->name('import');
   Route::get('all/items', 'getAllItems');
   Route::get('get/{item_id}', 'getItem');
 });
