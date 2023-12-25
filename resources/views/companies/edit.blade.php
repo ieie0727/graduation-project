@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', '企業編集')
+@section('title', '取引先編集')
 
 @section('content_header')
-<h1>企業編集</h1>
+<h1>取引先編集（ID:{{$company->id}}）</h1>
 @stop
 
 @section('content')
@@ -49,8 +49,8 @@
         </div>
 
         <div class="card-footer">
-          <button type="submit" class="btn btn-info">更新</button>
-          <a href="{{ route('companies.index') }}" class="btn btn-secondary ml-3">キャンセル</a>
+          <a href="{{ route('companies.show', compact('company')) }}" class="btn btn-secondary">戻る</a>
+          <button type="submit" class="btn btn-primary ml-3">更新</button>
         </div>
       </form>
     </div>

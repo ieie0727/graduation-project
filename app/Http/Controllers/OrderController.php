@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Company;
 use App\Models\Order;
 use App\Models\Item;
@@ -18,7 +19,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::paginate(20);
+        $orders = Order::sortable()->orderBy('created_at', 'desc')->paginate(20);
         return view('orders.index', compact('orders'));
     }
 
@@ -122,6 +123,7 @@ class OrderController extends Controller
                     'order_id' => $order->id,
                     'item_id' => $order_item['id'],
                     'quantity' => $order_item['quantity'],
+                    'price' => $order_item['price'],
                     'sub_total' => $order_item['sub_total'],
                 ]);
 
@@ -148,15 +150,17 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Order $order)
     {
-        //
+        $order_items = $order->orderItems()->get();
+        //dd($order_items->count());
+        return view('orders.show', compact('order', 'order_items'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Order $order)
     {
         //
     }
@@ -164,7 +168,7 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Order $order)
     {
         //
     }
@@ -172,7 +176,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Order $order)
     {
         //
     }

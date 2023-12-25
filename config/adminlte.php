@@ -296,17 +296,17 @@ return [
             'icon' => 'fas fa-gamepad',
         ],
         [
-            'text' => '商品一覧',
+            'text' => '商品管理',
             'url'  => 'items',
             'icon' => 'fas fa-gamepad',
         ],
         [
-            'text' => '発注',
+            'text' => '発注管理',
             'url'  => 'orders',
             'icon' => 'fas fa-gamepad',
         ],
         [
-            'text' => '取引先',
+            'text' => '取引先管理',
             'url'  => 'companies',
             'icon' => 'fas fa-gamepad',
         ],

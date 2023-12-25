@@ -66,8 +66,8 @@ use Illuminate\Http\Request;
                 }
                 @endphp
                 @for ($i = 1; $i <= $length; $i++) <tr>
-                  <td>{{ $i }}</td>
-                  <td>
+                  <td class="align-middle">{{ $i }}</td>
+                  <td class="align-middle">
                     <select class="id" name="order_items[{{$i}}][id]">
                       <option value="0" selected></option>
                       @foreach ($items as $item)
@@ -79,16 +79,16 @@ use Illuminate\Http\Request;
                     </select>
                   </td>
 
-                  <td> {{--lavelタグで表示--}}
+                  <td class="align-middle"> {{--lavelタグで表示--}}
                     <input type="number" class="price" name="order_items[{{$i}}][price]"
                       value="{{ old('order_items.'.$i.'.price', 0) }}" readonly>
                   </td>
-                  <td>
+                  <td class="align-middle">
                     <input type="number" class="quantity" name="order_items[{{$i}}][quantity]"
                       value="{{old('order_items.'.$i.'.quantity',0)}}" min="0">
                   </td>
 
-                  <td>{{--lavelで表示--}}
+                  <td class="align-middle">{{--lavelで表示--}}
                     <input type="number" class="sub-total" name="order_items[{{$i}}][sub_total]"
                       value="{{old('order_items.'.$i.'.sub_total',0)}}" readonly>
                   </td>
@@ -177,16 +177,16 @@ use Illuminate\Http\Request;
       if(rowCount<maxLength){
         let i =Number(rowCount)+1;
         let newRow =`<tr>`+
-                `<td>${i}</td>`+
-                `<td><select class="id" name="order_items[${i}][id]">`+
+                `<td class="align-middle">${i}</td>`+
+                `<td class="align-middle"><select class="id" name="order_items[${i}][id]">`+
                     `<option value="" selected disabled></option>`+
                     `@foreach ($items as $item)`+
                     `<option value="{{$item->id}}">{{$item->name}}（{{$item->artist}}）</option>`+
                     `@endforeach`+
                   `</select></td>`+
-                `<td><input type="number" class="price" name="order_items[${i}][price]" value="0" readonly></td>`+
-                `<td><input type="number" class="quantity" name="order_items[${i}][quantity]" value="0" min="0"></td>`+
-                `<td><input type="number" class="sub-total" name="order_items[${i}][sub_total]" value="0"></td>`+
+                `<td class="align-middle"><input type="number" class="price" name="order_items[${i}][price]" value="0" readonly></td>`+
+                `<td class="align-middle"><input type="number" class="quantity" name="order_items[${i}][quantity]" value="0" min="0"></td>`+
+                `<td class="align-middle"><input type="number" class="sub-total" name="order_items[${i}][sub_total]" value="0"></td>`+
                 `</tr>`;
         $('#orderTableBody').append(newRow);
       }else{

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('order_id')->nullable(); // nullable を追加
             $table->unsignedBigInteger('item_id')->nullable(); // nullable を追加
+            $table->integer('price');
             $table->integer('quantity');
             $table->decimal('sub_total', 10, 2);
             $table->timestamps();

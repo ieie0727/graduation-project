@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', '企業詳細')
+@section('title', '取引先詳細')
 
 @section('content_header')
-<h1>企業詳細</h1>
+<h1>取引先詳細（ID:{{$company->id}}）</h1>
 @stop
 
 @section('content')
@@ -33,6 +33,7 @@
       </div>
       <div class="card-footer">
         <a href="{{ route('companies.index') }}" class="btn btn-secondary">戻る</a>
+        <a href="{{ route('companies.edit', compact('company')) }}" class="btn btn-primary ml-3">更新</a>
       </div>
     </div>
   </div>

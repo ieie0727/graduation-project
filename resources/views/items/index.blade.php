@@ -49,12 +49,12 @@
                     <tbody>
                         @foreach ($items as $item)
                         <tr onclick="window.location='{{route('items.show', $item)}}'">
-                            <td>{{ $item->id }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{$item->artist}}</td>
-                            <td>{{ $item->category }}</td>
-                            <td>{{ $item->price }}</td>
-                            <td>{{ $item->quantity }}</td>
+                            <td class="align-middle">{{ $item->id }}</td>
+                            <td class="align-middle">{{ $item->name }}</td>
+                            <td class="align-middle">{{$item->artist}}</td>
+                            <td class="align-middle">{{ $item->category }}</td>
+                            <td class="align-middle">{{ $item->price }}</td>
+                            <td class="align-middle">{{ $item->quantity }}</td>
                         </tr>
                         @endforeach
                     </tbody>
