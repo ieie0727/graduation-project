@@ -87,8 +87,16 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($id)
     {
+        $user = User::withTrashed()->where('id', $id)->first();
+
+        //論理削除されたユーザーの場合
+        if ($user->trashed()) {
+            return view('users.edit_delete', compact('user'));
+        }
+
+        //それ以外は普通の画面を表示
         return view('users.edit', compact('user'));
     }
 
