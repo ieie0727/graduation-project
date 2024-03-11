@@ -49,7 +49,8 @@
           </thead>
           <tbody>
             @foreach ($users as $user)
-            <tr onclick="window.location='{{route('users.edit', $user)}}'">
+            <?php $rootName = 'users.edit' ?>
+            <tr onclick="window.location='{{route($rootName, $user)}}'">
               <td class="align-middle">{{ $user->id }}</td>
               <td class="align-middle">
                 @if ($user->role==1)
