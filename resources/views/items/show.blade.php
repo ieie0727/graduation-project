@@ -33,12 +33,12 @@
 
         <div class="form-group">
           <label for="price">価格</label>
-          <p>{{ $item->price }}</p>
+          <p>{{ number_format($item->price) }}</p>
         </div>
 
         <div class="form-group">
           <label for="detail">詳細</label>
-          <p>{{ $item->detail }}</p>
+          <p>{!! nl2br(e($item->detail)) !!}</p>
         </div>
 
         <div class="form-group">
