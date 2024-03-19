@@ -50,7 +50,7 @@
 
         <div class="card-footer">
           <a href="{{ route('companies.show', compact('company')) }}" class="btn btn-secondary">戻る</a>
-          <button type="submit" class="btn btn-primary ml-3">更新</button>
+          <button type="submit" class="btn btn-primary ml-3">編集</button>
         </div>
       </form>
     </div>
