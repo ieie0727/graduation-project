@@ -33,12 +33,12 @@
 
         <div class="form-group">
           <label for="price">価格</label>
-          <p>{{ $item->price }}</p>
+          <p>{{ number_format($item->price) }}</p>
         </div>
 
         <div class="form-group">
           <label for="detail">詳細</label>
-          <p>{{ $item->detail }}</p>
+          <p>{!! nl2br(e($item->detail)) !!}</p>
         </div>
 
         <div class="form-group">
@@ -54,7 +54,7 @@
 
       <div class="card-footer">
         <a href="{{ route('items.index') }}" class="btn btn-secondary">戻る</a>
-        <a href="{{ route('items.edit', compact('item')) }}" class="btn btn-primary ml-3">更新</a>
+        <a href="{{ route('items.edit', compact('item')) }}" class="btn btn-primary ml-3">編集</a>
         <form action="{{ route('items.destroy', compact('item')) }}" method="POST"
           onsubmit="return confirm('本当に削除しますか？')" id="item_delete_button" class="ml-3" style="display: inline;">
           @csrf

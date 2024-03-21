@@ -25,22 +25,23 @@
         <div class="card-body">
           <div class="form-group">
             <label for="name">名前</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
+            <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}" required>
           </div>
 
           <div class="form-group">
             <label for="email">メールアドレス</label>
-            <input type="email" class="form-control" id="email" name="email" value="{{old('email')}}">
+            <input type="email" class="form-control" id="email" name="email" value="{{old('email')}}" required>
           </div>
 
           <div class="form-group">
             <label for="password">パスワード</label>
-            <input type="password" class="form-control" id="password" name="password">
+            <input type="password" class="form-control" id="password" name="password" required>
           </div>
 
           <div class="form-group">
             <label for="password_confirmation">パスワード(確認用)</label>
-            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
+            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
+              required>
           </div>
         </div>
 

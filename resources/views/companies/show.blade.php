@@ -33,7 +33,7 @@
       </div>
       <div class="card-footer">
         <a href="{{ route('companies.index') }}" class="btn btn-secondary">戻る</a>
-        <a href="{{ route('companies.edit', compact('company')) }}" class="btn btn-primary ml-3">更新</a>
+        <a href="{{ route('companies.edit', compact('company')) }}" class="btn btn-primary ml-3">編集</a>
       </div>
     </div>
   </div>

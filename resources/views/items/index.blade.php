@@ -53,7 +53,7 @@
                             <td class="align-middle">{{ $item->name }}</td>
                             <td class="align-middle">{{$item->artist}}</td>
                             <td class="align-middle">{{ $item->category }}</td>
-                            <td class="align-middle">{{ $item->price }}</td>
+                            <td class="align-right">{{ number_format($item->price) }}</td>
                             <td class="align-middle">{{ $item->quantity }}</td>
                         </tr>
                         @endforeach

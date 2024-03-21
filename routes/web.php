@@ -18,6 +18,11 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //usersのルート設定
 Route::resource('users', UserController::class)->middleware('auth');
+Route::controller(UserController::class)->prefix('users')->name('users.')->group(function () {
+  Route::get('edit_deleted', 'edit_deleted');
+  Route::put('{user}/restore', 'restore')->name('restore');
+});
+
 
 //itemsのルート設定
 Route::resource('items', ItemController::class)->middleware('auth');

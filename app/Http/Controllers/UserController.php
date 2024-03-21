@@ -73,6 +73,8 @@ class UserController extends Controller
     }
 
 
+
+
     /**
      * Display the specified resource.
      */
@@ -87,8 +89,16 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit($id)
     {
+        $user = User::withTrashed()->where('id', $id)->first();
+
+        //論理削除されたユーザーの場合
+        if ($user->trashed()) {
+            return view('users.edit_deleted', compact('user'));
+        }
+
+        //それ以外は普通の画面を表示
         return view('users.edit', compact('user'));
     }
 
@@ -126,5 +136,27 @@ class UserController extends Controller
 
         //画面遷移
         return to_route('users.index')->with('flash_message', 'ユーザーを退会させました。');
+    }
+
+
+    /**
+     * 論理削除されたユーザーの編集画面
+     */
+    public function edit_deleted()
+    {
+        return view('users.edit_deleted');
+    }
+
+    /**
+     * 論理削除されたユーザーの復元
+     */
+    public function restore($id)
+    {
+        //復元処理
+        $user = User::withTrashed()->where('id', $id)->first();
+        $user->restore();
+
+        //画面遷移
+        return to_route('users.index')->with('flash_message', 'ユーザーを復元しました');
     }
 }
