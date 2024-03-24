@@ -17,8 +17,8 @@ Auth::routes();
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //usersのルート設定
-Route::resource('users', UserController::class)->middleware('auth');
-Route::controller(UserController::class)->prefix('users')->name('users.')->group(function () {
+Route::resource('users', UserController::class)->middleware(['auth', 'can:isAdmin']);
+Route::controller(UserController::class)->prefix('users')->name('users.')->middleware(['auth', 'can:isAdmin'])->group(function () {
   Route::get('edit_deleted', 'edit_deleted');
   Route::put('{user}/restore', 'restore')->name('restore');
 });

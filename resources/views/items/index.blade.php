@@ -28,10 +28,11 @@
                         </div>
                     </form>
                 </div>
-
+                @can('isAdmin')
                 <div class="card-tools" style="display:inline;">
                     <a href="{{ route('items.create') }}" class="btn btn-info">商品登録</a>
                 </div>
+                @endcan
             </div>
 
             <div class="card-body table-responsive p-0">
