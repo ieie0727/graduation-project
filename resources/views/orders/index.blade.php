@@ -19,9 +19,11 @@
         <h3 class="card-title">発注履歴</h3>
         <div class="card-tools">
           <div class="input-group input-group-sm">
+            @can('isAdmin')
             <div class="input-group-append">
               <a href="{{ route('orders.create') }}" class="btn btn-info">新規発注</a>
             </div>
+            @endcan
           </div>
         </div>
       </div>

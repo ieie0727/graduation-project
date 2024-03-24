@@ -19,9 +19,11 @@
         <h3 class="card-title">取引先一覧</h3>
         <div class="card-tools">
           <div class="input-group input-group-sm">
+            @can('isAdmin')
             <div class="input-group-append">
               <a href="{{ route('companies.create') }}" class="btn btn-info">新規登録</a>
             </div>
+            @endcan
           </div>
         </div>
       </div>
